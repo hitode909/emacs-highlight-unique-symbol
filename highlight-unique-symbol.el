@@ -9,6 +9,10 @@
   :group 'highlight-unique-symbol
   :type 'float)
 
+(defface highlight-unique-symbol:face
+    '((t (:foreground "red")))
+  "*Face used for unique symbol."
+  :group 'highlight-unique-symbol)
 
 (defvar highlight-unique-symbol:timer
   nil
@@ -57,7 +61,7 @@
                     ))))))))))
 
 (defun highlight-unique-symbol:warn (overlay)
-  (overlay-put overlay 'face font-lock-warning-face))
+  (overlay-put overlay 'face 'highlight-unique-symbol:face))
 
 (defun highlight-unique-symbol:ok (overlay)
   (overlay-put overlay 'face nil))
