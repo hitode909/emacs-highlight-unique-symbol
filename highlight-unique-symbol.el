@@ -81,17 +81,13 @@
          (begin (beginning-of-thing 'symbol))
          (end (end-of-thing 'symbol))
          (overlay (make-overlay begin end))
+         (on-modify '((lambda (overlay after-p begin end &optional length)
+                      (delete-overlay overlay))))
          )
       (overlay-put overlay 'highlight-unique-symbol:overlay 1)
-      (overlay-put overlay 'modification-hooks
-                   '((lambda (overlay after-p begin end &optional length)
-                      (delete-overlay overlay))))
-      (overlay-put overlay 'insert-in-front-hooks
-                   '((lambda (overlay after-p begin end &optional length)
-                      (delete-overlay overlay))))
-      (overlay-put overlay 'insert-behind-hooks
-                   '((lambda (overlay after-p begin end &optional length)
-                      (delete-overlay overlay))))
+      (overlay-put overlay 'modification-hooks on-modify)
+      (overlay-put overlay 'insert-in-front-hooks on-modify)
+      (overlay-put overlay 'insert-behind-hooks on-modify)
       overlay)))
 
 (defun highlight-unique-symbol (start)
