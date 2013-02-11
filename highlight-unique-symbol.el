@@ -4,10 +4,11 @@
 (require 'cl)
 (require 'deferred)
 
-(defvar highlight-unique-symbol:interval
-  0.1
-  "*Interval"
-  )
+(defcustom highlight-unique-symbol:interval 0.1
+  "Interval to check symbol's appearance count"
+  :group 'highlight-unique-symbol
+  :type 'float)
+
 
 (defvar highlight-unique-symbol:timer
   nil
