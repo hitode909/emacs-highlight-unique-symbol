@@ -4,7 +4,7 @@
 (require 'cl)
 (require 'deferred)
 
-(defvar highlight-unique-symbol:inteerval
+(defvar highlight-unique-symbol:interval
   0.1
   "*Interval"
   )
@@ -95,7 +95,7 @@
   (when (and start highlight-unique-symbol:timer) (highlight-unique-symbol nil))
   (if start
       (setq highlight-unique-symbol:timer (run-with-idle-timer
-                                           highlight-unique-symbol:inteerval
+                                           highlight-unique-symbol:interval
                                            t
                                            'highlight-unique-symbol:check))
   (when highlight-unique-symbol:timer
