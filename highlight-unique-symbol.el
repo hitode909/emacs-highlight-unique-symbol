@@ -47,7 +47,10 @@
         (progn
           (overlay-put current-overlay 'highlight-unique-symbol:symbol current-symbol)
           (deferred:$
-            (deferred:process-shell (format "cd %s && git grep --word-regexp --name-only %s | wc -l" (highlight-unique-symbol:git-root-directory) (shell-quote-argument current-symbol)))
+            (deferred:process-shell (format
+                                     "cd %s && git grep --word-regexp --name-only %s | wc -l"
+                                     (highlight-unique-symbol:git-root-directory)
+                                     (shell-quote-argument current-symbol)))
             (deferred:nextc it
               (lambda (res)
                 (lexical-let
