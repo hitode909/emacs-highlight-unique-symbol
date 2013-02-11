@@ -71,7 +71,7 @@
          (end (end-of-thing 'symbol))
          (overlays (overlays-in begin end))
          (overlay (find-if
-                   '(lambda (ovl) (overlay-get ovl 'highlight-unique-symbol:overlay))
+                   '(lambda (ovl) (overlay-get ovl 'highlight-unique-symbol:is-highlight-overlay))
                    overlays))
          )
       (if overlay
@@ -88,7 +88,7 @@
          (on-modify '((lambda (overlay after-p begin end &optional length)
                       (delete-overlay overlay))))
          )
-      (overlay-put overlay 'highlight-unique-symbol:overlay 1)
+      (overlay-put overlay 'highlight-unique-symbol:is-highlight-overlay 1)
       (overlay-put overlay 'modification-hooks on-modify)
       (overlay-put overlay 'insert-in-front-hooks on-modify)
       (overlay-put overlay 'insert-behind-hooks on-modify)
