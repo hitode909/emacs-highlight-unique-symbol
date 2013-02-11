@@ -70,7 +70,9 @@
          (overlays (overlays-in (beginning-of-thing 'symbol) (end-of-thing 'symbol)))
          (overlay (find-if '(lambda (ovl) (overlay-get ovl 'highlight-unique-symbol:overlay)) overlays))
          )
-      (if (and overlay (overlay-get overlay 'highlight-unique-symbol:overlay)) overlay (highlight-unique-symbol:create-overlay)))))
+      (if (and overlay (overlay-get overlay 'highlight-unique-symbol:overlay))
+          overlay
+        (highlight-unique-symbol:create-overlay)))))
 
 (defun highlight-unique-symbol:create-overlay ()
   (save-excursion
