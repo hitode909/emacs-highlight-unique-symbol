@@ -67,10 +67,14 @@
   (save-excursion
     (let*
         (
-         (overlays (overlays-in (beginning-of-thing 'symbol) (end-of-thing 'symbol)))
-         (overlay (find-if '(lambda (ovl) (overlay-get ovl 'highlight-unique-symbol:overlay)) overlays))
+         (begin (beginning-of-thing 'symbol))
+         (end (end-of-thing 'symbol))
+         (overlays (overlays-in begin end))
+         (overlay (find-if
+                   '(lambda (ovl) (overlay-get ovl 'highlight-unique-symbol:overlay))
+                   overlays))
          )
-      (if (and overlay (overlay-get overlay 'highlight-unique-symbol:overlay))
+      (if overlay
           overlay
         (highlight-unique-symbol:create-overlay)))))
 
