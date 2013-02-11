@@ -37,12 +37,12 @@
 
 (defun highlight-unique-symbol:check ()
   (interactive)
-  (lexical-let
+  (lexical-let*
       (
        (current-symbol (thing-at-point 'symbol))
-       (current-overlay (highlight-unique-symbol:overlay))
+       (current-overlay (and current-symbol (highlight-unique-symbol:overlay)))
        )
-    (when (highlight-unique-symbol:git-project-p)
+    (when (and current-symbol (highlight-unique-symbol:git-project-p))
       (unless (and  current-overlay (string= (overlay-get current-overlay 'highlight-unique-symbol:symbol) current-symbol))
         (progn
           (overlay-put current-overlay 'highlight-unique-symbol:symbol current-symbol)
@@ -52,13 +52,10 @@
               (lambda (res)
                 (lexical-let
                     ((appear-count (string-to-number res)))
-                  (when (string= current-symbol (thing-at-point 'symbol))
-                    (if (<= appear-count 1)
-                        (progn
-                          (highlight-unique-symbol:warn current-overlay)
-                          )
-                      (highlight-unique-symbol:ok current-overlay))
-                    ))))))))))
+                  (if (<= appear-count 1)
+                    (highlight-unique-symbol:warn current-overlay)
+                    (highlight-unique-symbol:ok current-overlay))
+                    )))))))))
 
 (defun highlight-unique-symbol:warn (overlay)
   (overlay-put overlay 'face 'highlight-unique-symbol:face))
