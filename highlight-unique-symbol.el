@@ -42,23 +42,28 @@
        (current-symbol (thing-at-point 'symbol))
        (current-overlay (and current-symbol (highlight-unique-symbol:overlay)))
        )
-    (when (and current-symbol (highlight-unique-symbol:git-project-p))
-      (unless (and  current-overlay (string= (overlay-get current-overlay 'highlight-unique-symbol:symbol) current-symbol))
-        (progn
-          (overlay-put current-overlay 'highlight-unique-symbol:symbol current-symbol)
-          (deferred:$
-            (deferred:process-shell (format
-                                     "cd %s && git grep --word-regexp --name-only %s | wc -l"
-                                     (highlight-unique-symbol:git-root-directory)
-                                     (shell-quote-argument current-symbol)))
-            (deferred:nextc it
-              (lambda (res)
-                (lexical-let
-                    ((appear-count (string-to-number res)))
-                  (if (<= appear-count 1)
-                    (highlight-unique-symbol:warn current-overlay)
-                    (highlight-unique-symbol:ok current-overlay))
-                    )))))))))
+    (when (and
+           current-symbol
+           current-overlay
+           (highlight-unique-symbol:git-project-p)
+           (highlight-unique-symbol:is-overlay-changed  current-overlay current-symbol))
+      (overlay-put current-overlay 'highlight-unique-symbol:symbol current-symbol)
+      (deferred:$
+        (deferred:process-shell (format
+                                 "cd %s && git grep --word-regexp --name-only %s | wc -l"
+                                 (highlight-unique-symbol:git-root-directory)
+                                 (shell-quote-argument current-symbol)))
+        (deferred:nextc it
+          (lambda (res)
+            (lexical-let
+                ((appear-count (string-to-number res)))
+              (if (<= appear-count 1)
+                  (highlight-unique-symbol:warn current-overlay)
+                (highlight-unique-symbol:ok current-overlay))
+              )))))))
+
+(defun highlight-unique-symbol:is-overlay-changed (overlay symbol-at-point)
+  (not (string= (overlay-get overlay 'highlight-unique-symbol:symbol) symbol-at-point)))
 
 (defun highlight-unique-symbol:warn (overlay)
   (overlay-put overlay 'face 'highlight-unique-symbol:face))
