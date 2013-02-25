@@ -46,7 +46,10 @@
            current-symbol
            current-overlay
            (highlight-unique-symbol:git-project-p)
-           (highlight-unique-symbol:is-overlay-changed  current-overlay current-symbol))
+           (highlight-unique-symbol:is-overlay-changed  current-overlay current-symbol)
+           (not (eq (face-at-point) 'font-lock-comment-face))
+           (not (eq (face-at-point) 'font-lock-doc-face))
+           )
       (overlay-put current-overlay 'highlight-unique-symbol:symbol current-symbol)
       (deferred:$
         (deferred:process-shell (format
