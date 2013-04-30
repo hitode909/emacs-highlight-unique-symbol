@@ -50,18 +50,20 @@
       (overlay-put current-overlay 'highlight-unique-symbol:symbol current-symbol)
       (deferred:$
         (deferred:process-shell (format
-                                 "git grep --word-regexp -I --fixed-strings --name-only --no-color %s %s | wc -l"
+                                 ;; -I Don't match the pattern in binary files
+                                 "git --no-pager grep --cached --word-regexp -I --fixed-strings --quiet -e %s -- %s"
                                  (shell-quote-argument current-symbol)
                                  (highlight-unique-symbol:git-root-directory)
                                  ))
+        ;; success when found
         (deferred:nextc it
           (lambda (res)
-            (lexical-let
-                ((appear-count (string-to-number res)))
-              (if (<= appear-count 1)
-                  (highlight-unique-symbol:warn current-overlay)
-                (highlight-unique-symbol:ok current-overlay))
-              )))))))
+            (highlight-unique-symbol:ok current-overlay)))
+        ;; error when not found
+        (deferred:error it
+          (lambda (res)
+            (highlight-unique-symbol:warn current-overlay)))
+        ))))
 
 (defun highlight-unique-symbol:is-overlay-changed (overlay symbol-at-point)
   (not (string= (overlay-get overlay 'highlight-unique-symbol:symbol) symbol-at-point)))
