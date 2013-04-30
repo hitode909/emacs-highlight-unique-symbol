@@ -50,9 +50,10 @@
       (overlay-put current-overlay 'highlight-unique-symbol:symbol current-symbol)
       (deferred:$
         (deferred:process-shell (format
-                                 "cd %s && git grep --word-regexp --name-only %s | wc -l"
+                                 "git grep --word-regexp -I --fixed-strings --name-only --no-color %s %s | wc -l"
+                                 (shell-quote-argument current-symbol)
                                  (highlight-unique-symbol:git-root-directory)
-                                 (shell-quote-argument current-symbol)))
+                                 ))
         (deferred:nextc it
           (lambda (res)
             (lexical-let
