@@ -3,6 +3,8 @@
 
 (require 'cl)
 (require 'deferred)
+(require 'vc)
+(require 'vc-git)
 
 (defcustom highlight-unique-symbol:interval 0.1
   "Interval to check symbol's appearance count"
@@ -23,10 +25,7 @@
   (replace-regexp-in-string "[\n\r]+$" "" str))
 
 (defun highlight-unique-symbol:git-project-p ()
-  (string=
-   (highlight-unique-symbol:chomp
-    (shell-command-to-string "git rev-parse --is-inside-work-tree"))
-   "true"))
+  (string= (vc-backend buffer-file-name) "Git"))
 
 (defun highlight-unique-symbol:git-root-directory ()
   (cond ((highlight-unique-symbol:git-project-p)
