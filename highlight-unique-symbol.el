@@ -25,14 +25,12 @@
   (replace-regexp-in-string "[\n\r]+$" "" str))
 
 (defun highlight-unique-symbol:git-project-p ()
-  (string= (vc-backend buffer-file-name) "Git"))
+  (not (string= (highlight-unique-symbol:git-root-directory) "")))
 
 (defun highlight-unique-symbol:git-root-directory ()
-  (cond ((highlight-unique-symbol:git-project-p)
-         (highlight-unique-symbol:chomp
-          (shell-command-to-string "git rev-parse --show-toplevel")))
-        (t
-         "")))
+  (or (vc-file-getprop default-directory 'highlight-unique-symbol-git-root-directory)
+      (vc-file-setprop default-directory 'highlight-unique-symbol-git-root-directory
+                       (or (vc-git-root default-directory) ""))))
 
 (defun highlight-unique-symbol:check ()
   (interactive)
