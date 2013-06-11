@@ -148,4 +148,8 @@
 
 (provide 'highlight-unique-symbol)
 
+;; Local Variables:
+;; byte-compile-warnings: (not cl-functions)
+;; End:
+
 ;;; highlight-unique-symbol.el ends here
