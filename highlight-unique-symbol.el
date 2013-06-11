@@ -133,6 +133,7 @@
       (overlay-put overlay 'insert-behind-hooks on-modify)
       overlay)))
 
+;;;###autoload
 (defun highlight-unique-symbol (start)
   "Start highlighting unique symbols"
   (when (and start highlight-unique-symbol:timer) (highlight-unique-symbol nil))
