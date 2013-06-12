@@ -34,6 +34,13 @@
 (require 'vc)
 (require 'vc-git)
 
+(defgroup highlight-unique-symbol nil
+  "Typo Finder"
+  :group 'tools
+  )
+
+
+
 (defcustom highlight-unique-symbol:interval 0.1
   "Interval to check symbol's appearance count"
   :group 'highlight-unique-symbol
