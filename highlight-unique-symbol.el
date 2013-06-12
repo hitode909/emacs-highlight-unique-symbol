@@ -34,13 +34,13 @@
 (require 'vc)
 (require 'vc-git)
 
-(defcustom highlight-unique-symbol:interval 0.1
+(defcustom highlight-unique-symbol:interval 0.5
   "Interval to check symbol's appearance count"
   :group 'highlight-unique-symbol
   :type 'float)
 
 (defface highlight-unique-symbol:face
-    '((t (:foreground "red")))
+    '((t (:foreground "white")))
   "*Face used for unique symbol."
   :group 'highlight-unique-symbol)
 
