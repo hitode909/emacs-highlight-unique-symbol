@@ -1,4 +1,4 @@
-# highlieht-unique-symbol
+# highlight-unique-symbol
 
 * Highlight symbols which not appear in the repository.
 * That may be typo, miss spell or unused method.
